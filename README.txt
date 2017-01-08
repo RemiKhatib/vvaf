@@ -29,7 +29,7 @@ DEBUG='fprof'   #Same than warning but with a fprofile
 #========
 #Tutorial
 #========
-The methodology is described in __benchmarks. Please,
+The methodology is described in __tutorials. Please,
 follow the numbers.
 In each directory, you will find an input file where
 the keywords will be explained and a command.sh file
