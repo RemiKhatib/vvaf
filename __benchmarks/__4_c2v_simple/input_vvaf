@@ -11,6 +11,14 @@
 #x in the molecular plane
 #y out of the molecular plane
 
+#The output contains 10 columns:
+#  -One is associated with the frequency
+#  -The others are associated with the decomposition into the normal
+#   modes: f(t) = sum_Q1,Q2 ( < y_Q2(t) . x_Q1(0) > )
+#   Since there are 3 modes for am AX2 molecule with a C2V symmetry,
+#   You have 3x3 combinations
+#Refer to the header to correctly attribute the different terms
+
 &MAIN
   VEL_FILE          vel.xyz
   CELL_PARAM	    20 20 50

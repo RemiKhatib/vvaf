@@ -6,6 +6,26 @@
 #d alpha / d t = (d alpha / d r) (d r / d t)
 #It becomes possible to calculate the second order susceptibility tensor
 
+#The output contains 4 columns:
+#1) Frequency
+#2) Bond auto correlation: f(t) = < a(t) . m(0) >
+#3) Intra-molecular correlation. Instead of using the dipole moment
+#   / polarizability of the bonds we use those of their sum
+#   m' = m_bond1 + m_bond_2
+#   a' = a_bond1 + a_bond_2
+#   g(t) = < a'(t) . m'(0) >
+#4) Cross-correlation function. We sum all the contributions.
+#   m'' = sum_i m_bondi
+#   a'' = sum_i a_bondi
+#   g(t) = < a''(t) . m''(0) >
+
+#=================
+# IMPORTANT REMARK
+#=================
+#Because of the ratio signal / noise, it may be usefull to restrict
+#the cross-terms to the first or second solvation shell
+#Please, refer to the benchmar number 6
+
 #Because none of the water molecules of the toy model
 #give an XXZ signal, I will focus exclusively on the IR
 #and Raman spectra
@@ -60,8 +80,7 @@
     #Because it is a code oriented toward the SFG simulations
     #we want to calculate the PQR element of the chi(2)
     #In this case the index below has to correspond to R
-    &DIPOLE         X
-      #Partial derivatives of v
+    &DIPOLE         X 
       STRETCH_x -0.15 #d v / d r along x in the bond framework
       STRETCH_y 0.0   #d v / d r along y in the bond framework
       STRETCH_z 2.1   #d v / d r along z in the bond framework
