@@ -59,9 +59,7 @@ very_clean:
 #Create tag files to navigate with emacs
 #module.f95 is put at the end because usually, it is the one that I use the less
 tag:
-	cd $(SRC_DIR) ; \
-	etags `find . -maxdepth 1 -name \*.f95 ! -name module.f95` module.f95 ; \
-	cd - ;
+	etags $(SRC_DIR)/*.f95 $(SRC_DIR)/module.f95 -o $(SRC_DIR)/TAGS
 
 #==================
 #Debugging commands
