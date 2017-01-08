@@ -1,0 +1,303 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fullpage}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{xcolor}
+
+\newcommand{\ML}{\overrightarrow{M_L}}
+\newcommand{\MM}{\overrightarrow{M_M}}
+\newcommand{\MB}{\overrightarrow{M_B}}
+\newcommand{\MO}{\overrightarrow{M_0}}
+\newcommand{\ME}{\overrightarrow{M_{eq}}}
+\newcommand{\MSS}{\overrightarrow{M_{SS}}}
+\newcommand{\MAS}{\overrightarrow{M_{AS}}}
+\newcommand{\AL}{\dot{A_L}}
+\newcommand{\ASS}{A_{SS}}
+\newcommand{\AAS}{A_{AS}}
+\newcommand{\DE}{D_{L,eq}}
+\newcommand{\xB}{\overrightarrow{x_B}}
+\newcommand{\yB}{\overrightarrow{y_B}}
+\newcommand{\zB}{\overrightarrow{z_B}}
+\newcommand{\xM}{\overrightarrow{x_M}}
+\newcommand{\yM}{\overrightarrow{y_M}}
+\newcommand{\zM}{\overrightarrow{z_M}}
+\newcommand{\dmdtheta}{\frac{\partial \MM}{\partial \theta}}
+\newcommand{\dmdr}{\frac{\partial \MB}{\partial r}}
+\newcommand{\dadtheta}{\frac{\partial A_M}{\partial \theta}}
+\newcommand{\dmasdr}{\frac{\partial \overrightarrow{M_{AS}}}{\partial r}}
+\newcommand{\dmssdr}{\frac{\partial \overrightarrow{M_{SS}}}{\partial r}}
+\newcommand{\dadr}{\frac{\partial A_B}{\partial r}}
+\newcommand{\daasdr}{\frac{\partial A_{AS}}{\partial r}}
+\newcommand{\dassdr}{\frac{\partial A_{SS}}{\partial r}}
+\newcommand{\ra}{\dot{r_1}}
+\newcommand{\rb}{\dot{r_{-1}}}
+
+\begin{document}
+
+%===========
+%Definitions
+%===========
+\section{Preliminary definitions}
+\paragraph{Dipole moments}
+\begin{itemize}
+\item $\ML$ is the dipole moment is the lab framework and takes into account all the effects relative to the molecule
+\item $\MM$ is the dipole moment is the molecular framework and takes into account all the effects relative to the molecule
+\item $\MB$ is the dipole moment is the bond referential and takes into account \textbf{only the effects relative to the bond}
+\end{itemize}
+
+\paragraph{Average values}
+\begin{itemize}
+\item the average values in a bulk of water are noted with the index $0$ ($r_0$, $\theta_0$, ...)
+\item the average values within the sampling time ($\le 3$ ps) are different from their equivalent in bulk, they are noted with an index $eq$ ($r_{eq}$, $\theta_{eq}$, ...)
+\end{itemize}
+
+\paragraph{Frameworks}
+\begin{itemize}
+\item The bond framework is orthonormal and is defined in such way that $\zB$ is along the O-H bond, $\xB$ is inside the molecular plane (the angle done with the second bond is $<180\deg$), $\yB$ is out of the plane
+\item The molecular framework is orthonormal and defined in such way that $\zM$ is along the first bissector of the H-O-H angle ($\theta$), $\yM$ is out of the plane and is the same than the $\yB$ of the bond labeld 1 (see below) and $\xM$ is in the molecular plane and points in the same direction than the bond labeled -1.
+\end{itemize}
+
+\paragraph{Rotation matrix}
+\begin{itemize}
+\item $D_L$ is the rotation matrix which converts the vectors expressed in the molecular referential into the lab referential. Because of that, it includes takes into account not only the global orientation of the molecule but also the librational mode.
+\item $D_\epsilon$ is the rotation matrix which converts the vectors expressed in the bond referential into the molecular referential. For each molecule, $\epsilon$ takes 2 values -1 or 1.
+  \begin{equation}
+    D_\epsilon = \begin{bmatrix}
+        \epsilon \cos(\theta/2) & 0  & -\epsilon \sin(\theta/2)\\
+        0 & \epsilon & 0 \\
+        \sin(\theta/2) & 0 & \cos(\theta/2)
+      \end{bmatrix}
+  \end{equation}
+  
+\end{itemize}
+
+
+
+%=========
+%Real work
+%=========
+\section{Calculations}
+The modes associated with the translation and the rotation of the water molecule are neglected. Therefore, we take into account only the stretching, the bending and the libration. For the whole development, the molecule remains in a specific region with a specific orientation. All the expansions will be done at the first order of $r$ and $\theta$:
+\begin{align}
+  \ML=& D_L \left[ \MO +
+    \left( \theta -\theta_0 \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_0 \right) \dmdr
+  \right]\\
+  = & D_L \left[ \ME +
+    \left( \theta -\theta_{eq} \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]
+\end{align}
+with 
+\begin{equation}
+  \ME = \MO + 
+  \left( \theta_{eq} -\theta_0 \right) \dmdtheta +
+  \sum_{\epsilon=-1,1} D_\epsilon\left( r_{eq}-r_0 \right) \dmdr
+\end{equation}
+Therefore:
+\begin{equation}
+  \left\langle \ML \right\rangle = \DE\ME
+\end{equation}
+
+
+\subsection{Only stretching}
+The following suppositions are done: $\theta=\theta_{eq}$, $D_\epsilon=D_{\epsilon,eq}$ and $D_L=\DE$.
+\begin{flalign*}
+  \delta\ML =& \DE \sum_{\epsilon=-1,1} D_{\epsilon,\color{red}eq}\left( r-r_{eq} \right) \dmdr\\
+  \dot{\ML}=& \DE \sum_{\epsilon=-1,1} D_{\epsilon,eq}\dot{r} \dmdr
+\end{flalign*}
+AM1 and VVAF reproduce respectively $\delta\ML$ and $\dot{\ML}$. AM2 will give:
+\begin{flalign*}
+  \delta\ML =& \DE \sum_{\epsilon=-1,1} D_{\epsilon,\color{red}0}\left( r-r_{eq} \right) \dmdr&
+\end{flalign*}
+At the first order, the equations for AM1 and AM2 are the same.
+
+\subsection{Only bending}
+The following suppositions are done: $r_\epsilon=r_{\epsilon,eq}$ and $D_L=\DE$.
+\begin{flalign*}
+  \delta\ML =& \DE \left( \theta -\theta_{eq} \right) \dmdtheta\\
+  \dot{\ML}=& \DE \dot{\theta} \dmdtheta
+\end{flalign*}
+
+
+\subsection{Only libration}
+The following suppositions are done: $r_\epsilon=r_{\epsilon,eq}$, $\theta=\theta_{eq}$ and $D_\epsilon=D_{\epsilon,eq}$.
+\begin{flalign*}
+  \delta\ML =& \left( D_L-\DE \right) \ME \\
+  \dot{\ML}=& \dot{D_L} \ME
+\end{flalign*}
+
+
+\subsection{All the modes are decorrelated}
+\begin{flalign*}
+  \delta\ML =& \left(D_L -\DE\right)\ME  +
+  D_L \left[ 
+    \left( \theta -\theta_{eq} \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]&\\
+  =& \left(D_L -\DE\right) \left[
+    \ME  +
+    \left( \theta -\theta_{eq} \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]&\\
+  +&\DE\left[
+    \left( \theta -\theta_{eq} \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]\\
+  \dot{\ML}=& \dot{D_L} \left[ \ME +
+    \left( \theta -\theta_{eq} \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right] \\
+  +& D_L\left[ 
+    \dot{\theta} \dmdtheta +
+    \sum_{\epsilon=-1,1} \left( \dot{D_\epsilon}\left( r_\epsilon-r_{eq} \right) + D_\epsilon \dot{r_\epsilon} \right)\dmdr
+  \right]  
+\end{flalign*}
+At the first order we get back the 3 previous contributions:
+\begin{flalign}
+  \delta\ML =& \left(D_L -\DE\right) \ME +\DE\left[
+    \left( \theta -\theta_{eq} \right) \dmdtheta +
+    \sum_{\epsilon=-1,1} D_{\epsilon,eq}\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]\\
+  \dot{\ML}=& \dot{D_L} \ME + \DE\left[ 
+    \dot{\theta} \dmdtheta +
+    \sum_{\epsilon=-1,1} D_{\epsilon,eq} \dot{r_\epsilon} \dmdr
+  \right]  
+  \label{eq:1order}
+\end{flalign}
+
+\paragraph{Differences between the codes}
+\begin{itemize}
+\item VVAF
+\begin{equation*}
+  \text{VVAF}=D_L\left[ 
+    \sum_{\epsilon=-1,1} D_{\epsilon} \dot{r_\epsilon} \dmdr
+  \right]  
+  \approx \DE \left[ \sum_{\epsilon=-1,1} D_{\epsilon,eq} \dot{r_\epsilon} \dmdr \right]
+\end{equation*}
+At the first order, we have what we want.
+\item AM1
+\begin{align*}
+  \text{AM1} =& \left(D_L -\DE\right)\ME +
+  D_L \left[ 
+    \sum_{\epsilon=-1,1} D_\epsilon\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]\\
+  \approx& \left(D_L -\DE\right) \ME +\DE \left[
+    \sum_{\epsilon=-1,1} D_{\epsilon,\color{red}eq}\left( r_\epsilon-r_{eq} \right) \dmdr
+  \right]
+\end{align*}
+The spectra obtained with AM1 will give the values for the librational mode and the stretching mode.
+\item AM2
+\begin{align*}
+  \text{AM2} = D_L\left[ \sum_{\epsilon=-1,1} D_{\epsilon,0} \left( r_\epsilon-r_0 \right) \dmdr \right] \approx &
+  \DE\left[ \sum_{\epsilon=-1,1} D_{\epsilon,\color{red}0} \left( r_\epsilon-r_0 \right) \dmdr \right]\\
+  \approx& \text{AM1} - \left(D_L -\DE\right) \ME
+\end{align*}
+The spectra obtained with AM2 are only associated with the stretching mode (at the first order).
+\end{itemize}
+
+\subsection{Correlation between symmetric stretching and bending overtone}
+The main assertion which is done is that the symmetric stretching and the bending overtone are periodic modes and have both a frequency of $\omega$:
+\begin{itemize}
+\item $r_\epsilon-r_{eq} = R \cos(\omega t)$
+\item $\theta - \theta_{eq} = \Theta \cos(\omega t + \phi) $
+\end{itemize}
+
+In order to simplify the calculations other assertions are done:
+\begin{itemize}
+\item the libration will be neglected ($D_L=\DE$)
+\item the bending mode will be also neglected
+\item the antisymmetric stretching mode will be neglected (it cannot interact with the bending mode for symmetry reasons).
+\end{itemize}
+For symmetry reasons, the molecular dipole moment ($\MM$) and its derivative can be only along $\zM$. Therefore, in the following, we will study only the dipole moment within the molecular framework and along the $\zM$ axis.
+\begin{equation}
+  M_M=\MM .\zM = M_{eq} + \Theta \cos(\omega t + \phi)\dmdtheta + 2R \cos(\omega t)\dmdr
+\end{equation}
+Therefore:
+\begin{flalign*}
+  \left \langle M_M\right\rangle= &M_{eq}&\\
+  \delta M_M = &\Theta \cos(\omega t + \phi)\dmdtheta + 2R \cos(\omega t)\dmdr\\
+  \dot{M_M} = & -\omega \left( \Theta\sin(\omega t + \phi)\dmdtheta + 2R\sin(\omega t)\dmdr \right)
+\end{flalign*}
+Conclusion: if the bending overtone has an impact on the spectra, we miss it!
+
+
+
+\section{Symmetric and antisymmetric stretching}
+SS=symmetric stretching\\
+AS=antisymetric stretching
+\subsection{Dipole moment}
+In the equation~\ref{eq:1order},  let's rewrite the terms which are bond dependant into other terms where AS and SS modes will appear:
+\begin{flalign*}
+  D_{1,eq}\ra + D_{-1,eq}\rb =& \begin{bmatrix}
+    c\ra & 0   & -s\ra\\
+    0    & \ra & 0    \\
+    s\ra & 0   & c\ra
+  \end{bmatrix} + \begin{bmatrix}
+    -c\rb & 0    & s\rb\\
+    0     & -\rb & 0    \\
+    s\rb  & 0    & c\rb
+  \end{bmatrix}\\
+  = & \begin{bmatrix}
+    c(\ra-\rb) & 0       & -s(\ra-\rb)\\
+    0          & \ra-\rb & 0    \\
+    s(\ra+\rb) & 0       & c(\ra+\rb)
+  \end{bmatrix}\\
+  = & (\ra-\rb)D_{AS} + (\ra+\rb)D_{SS}
+\end{flalign*}
+with $c=\cos(\theta/2)$, $s=\sin(\theta/2)$, $D_{AS}=\begin{bmatrix}c & 0 & -s\\ 0 & 1 & 0 \\ 0 & 0 & 0\end{bmatrix}$, $D_{SS}=\begin{bmatrix}0 & 0 & 0\\ 0 & 0 & 0 \\ s & 0 & c\end{bmatrix}$.
+
+Therefore, the equation~\ref{eq:1order} may be rewritten in such form:
+\begin{flalign*}
+  \dot{\ML}=& \dot{D_L} \ME + \DE\left[ 
+    \dot{\theta} \dmdtheta +
+    \left( \left[ \ra-\rb\right] D_{AS} + \left[\ra+\rb\right] D_{SS} \right)\dmdr \right ]\\
+    =&\dot{D_L} \ME + \DE\left[ 
+      \dot{\theta} \dmdtheta +
+      \left(\ra-\rb\right) \dmasdr + \left(\ra+\rb \right) \dmssdr \right ]
+\end{flalign*}
+with $\dmasdr=D_{AS}\dmdr$ and $\dmssdr=D_{SS}\dmdr$
+
+\subsection{Polarizability}
+One can rewrite the equation~\ref{eq:1order} for the polarizability:
+\begin{flalign*}
+  \AL=& \dot{D_L} A_{eq} \dot{D_L^t} + \DE\left[ 
+    \dot{\theta} \dadtheta +
+    \sum_{\epsilon=-1,1} D_{\epsilon,eq} \dot{r_\epsilon} \dadr D_{\epsilon,eq}^t
+  \right] \DE^t
+\end{flalign*}
+If one defines the transition polarizability of the bond as $\dadr=\begin{bmatrix}X&0&W\\0&Y&0\\W&0&Z\end{bmatrix}$, therefore:
+\begin{flalign*}
+D_{\epsilon,eq} \dadr D_{\epsilon,eq}^t = \begin{bmatrix}
+  c^2X - 2csW + s^2Z & 0 & \epsilon \left[ csX + (c^2-s^2)W - csZ\right]\\
+  0 & Y & 0\\
+  \epsilon \left[ csX + (c^2-s^2)W - csZ\right] & 0 & s^2X + 2csW + c^2Z
+\end{bmatrix}
+\end{flalign*}
+
+\begin{flalign*}
+\daasdr=\begin{bmatrix}
+  0 & 0 & csX + (c^2-s^2)W - csZ\\
+  0 & 0 & 0\\
+  csX + (c^2-s^2)W - csZ & 0 & 0
+\end{bmatrix}
+\end{flalign*}
+
+\begin{flalign*}
+\dassdr=\begin{bmatrix}
+  c^2X - 2csW + s^2Z & 0 & 0\\
+  0 & Y & 0\\
+  0 & 0 & s^2X + 2csW + c^2Z
+\end{bmatrix}
+\end{flalign*}
+
+
+\begin{flalign*}
+  \AL=& \dot{D_L} A_{eq} \dot{D_L^t} + \DE\left[ 
+    \dot{\theta} \dadtheta +
+    (\ra-\rb)\daasdr + (\ra+\rb)\dassdr
+  \right] \DE^t
+\end{flalign*}
+
+
+
+\end{document}

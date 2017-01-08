@@ -1,0 +1,15 @@
+#Ignore the objects
+*.gcda
+*.gcno
+*.o
+*.aux
+*.log
+mymod.mod
+
+#Ignore also files created during a benchmark
+TAGS
+*.dat
+*.xyz
+
+#Ignore the exectecutable
+vvaf

@@ -1,0 +1,56 @@
+#================IMPORTANT================#
+#The format is close from those of CP2K
+#Please for facilitate your reading use the
+#plugins for emacs or vi
+#https://www.cp2k.org/tools
+#================IMPORTANT================#
+
+#You can change the order of the blocks
+#or those of the lines
+
+#Everything after "#" is a comment
+#You can have as much space as you want
+
+#====================================================
+#This block is mandatory and will be used for all the
+#correlation functions you will want to do
+#It contains basic information
+#====================================================
+&MAIN
+  VEL_FILE          vel.xyz   #Filename of the velocity file
+  CELL_PARAM	    20 20 50  #Cell parameters
+  NORMAL_AXIS	    Z         #Axis normal to the interface
+  FIRST_STEP	    0         #First step to take into account (according to CP2K notation)
+  FINAL_STEP	    20000     #Final step to take into account (according to CP2K notation)
+  SAMPLE_WINDOW	    1000      #Determine the lower and upper limit (in steps) of the correlation function [-t:+t]
+  #The correlation finction calculated is an average of correlation functions 
+  #This keyword says at wich frequency (in steps) is changed t0 
+  SAMPLE_SHIFT	    10
+&END MAIN #Do not forget to close every block
+
+
+#=========================================
+#Block describing the correlation function
+#f(t)= < y(t) . x(0)>
+#In this case, it will be a simple VDOS
+#f(t) = < v(t) . v(0) >
+#You can have as much as you want
+#=========================================
+&VVAF               vdos.dat  #Give the name of the output file
+
+  #This block describe how x(0) is calculated
+  &VELOCITY0        ATOM      #Correlation function based on the atomic velocities
+    &ATOM                     #Description of the atom to take into account
+      ALL        #ALL takes all the atoms into account
+      #I could have used
+      #SYMBOL O H #You can put as many symbol you want
+      #INDEX  1 3 4 5 7 10 #You can also give the index you are interested in (start at 1)
+    &END ATOM
+  &END VELOCITY0
+
+  #This block describe how y(y) is calculated
+  &VELOCITYT        AUTO #If you are interested by an auto-correlation, you just need to add AUTO
+  &END VELOCITYT
+
+&END VVAF
+

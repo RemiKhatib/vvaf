@@ -1,0 +1,48 @@
+#Here, we want to select the atoms according to
+#their position on the z-axis
+#Multiple correlation files will be written
+#if you chose an increment sufficiently small
+
+&MAIN
+  VEL_FILE          vel.xyz
+  CELL_PARAM	    20 20 50
+  NORMAL_AXIS	    Z
+  FIRST_STEP	    0
+  FINAL_STEP	    20000
+  SAMPLE_WINDOW	    1000
+  SAMPLE_SHIFT	    10
+  POS_FILE          pos.xyz #Naturally, you have to define a position file
+&END MAIN
+
+#%v0m1, %v0M1, %v0m2, %v0M2 %vtm1, %vtM1, %vtm2, %vtM2 are
+#varaibles that you can use in the filename
+#Since in this case we care only about auto-correlation
+#v0XX and vtYY are equal
+&VVAF               vdos_%v0m1-%v0M1_and_%v0m2-%v0M2.dat 
+  &VELOCITY0        ATOM
+    &ATOM
+      ALL
+
+      #This block is new, it defines the atoms to take into account
+      &LAYER        Z     #Axis along which will be selected the atoms
+
+	SLAB1       0 15  #Definition of the SLAB 1 (Ang)
+	SLAB2       -15 0 #Definition of the SLAB 2 (Ang)
+	#Remark: The size of the 2 slabs have to be equal
+	
+	#Selection of the floating parameters
+	#Because of symmetry reason, you can chose only M1-m2 or M2-m1
+	#M stands for maximum, m stands for minimum
+	#1 refers to slab 1, 2 refers to slab 2
+	PARAM_INC   M1-m2 
+      &END LAYER
+
+    &END ATOM
+  &END VELOCITY0
+  &VELOCITYT        AUTO
+  &END VELOCITYT
+
+  LAYER_INC         1. #Increment used to go from m1 to M1 (and from M2 to m2 [negative value])
+
+&END VVAF
+

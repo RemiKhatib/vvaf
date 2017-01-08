@@ -1,0 +1,128 @@
+#In this file we will be interested by the
+#speed of elongation of a bond (d r / d t)
+#This velocity will be multiplied by a coefficient (d v / d r)
+#in order to calculate a time derivative value. For example:
+#d mu / d t = (d mu / d r) (d r / d t)
+#d alpha / d t = (d alpha / d r) (d r / d t)
+#It becomes possible to calculate the second order susceptibility tensor
+
+#Because none of the water molecules of the toy model
+#give an XXZ signal, I will focus exclusively on the IR
+#and Raman spectra
+#However, in a real system, you can play with the blocks
+
+&MAIN
+  VEL_FILE          vel.xyz
+  CELL_PARAM	    20 20 50
+  NORMAL_AXIS	    Z
+  FIRST_STEP	    0
+  FINAL_STEP	    20000
+  SAMPLE_WINDOW	    1000
+  SAMPLE_SHIFT	    10
+  POS_FILE	    pos.xyz
+
+  #Since you have a box with pbc and you study surfaces,
+  #you have 2 mirror plane in you system perpendicular
+  #to the normal axis (the distance between the 2 is c/2)
+  #The value below is associated with the position on
+  #the normal axis of one of these mirror plane 
+  #BE CAREFUL, with SFG, you change the sign of the signal
+  #if you select a different center
+  SLAB_CENTER	    0 
+&END MAIN
+
+#==
+#IR
+#==
+&VVAF               vvaf_H2O_IR-X.dat
+
+  #===========================
+  #Definition of (d x / d t)_0
+  #===========================
+  &VELOCITY0        BOND
+    &ATOM
+
+      #Since we are interested by bonds, we have to define them
+      SYMBOL        O #The central  / reference atom
+      &BOND_WITH      #Info associated with the ligand
+	SYMBOL      H #SYMBOL, INDEX, ALL can be used
+	NB_BOND     2 #Number of ligand associated with the central atom
+	DMIN        0 #Minimal distance between the central atom and the ligand
+	DMAX        1.3 #Maximal distance between the central atom and the ligand
+      &END BOND_WITH
+    &END ATOM
+
+    V_BOND_REF #This is to say that we are interested by the velocity of the bonds (d r / d t)
+
+    #This is the coefficient associated with d v / d r
+    #DIPOLE means that "v" is a vector
+    #X is the index (in the lab framework) which will be extracted
+    #Because it is a code oriented toward the SFG simulations
+    #we want to calculate the PQR element of the chi(2)
+    #In this case the index below has to correspond to R
+    &DIPOLE         X
+      #Partial derivatives of v
+      STRETCH_x -0.15 #d v / d r along x in the bond framework
+      STRETCH_y 0.0   #d v / d r along y in the bond framework
+      STRETCH_z 2.1   #d v / d r along z in the bond framework
+    &END DIPOLE
+
+  &END VELOCITY0
+
+  
+  #===========================
+  #Definition of (d x / d t)_T
+  #===========================
+  &VELOCITYT        AUTO
+    V_BOND_REF
+    #This block can be the same, the derivatives may change (it would
+    #be ackward but feasable) or you can say that you want a tensor
+    #instead of a vector (see the Raman part for that)
+    &DIPOLE         X
+      STRETCH_x -0.15
+      STRETCH_y 0.0
+      STRETCH_z 2.1
+    &END DIPOLE
+  &END VELOCITYT
+&END VVAF
+
+#=====
+#RAMAN
+#=====
+&VVAF               vvaf_H2O_Raman-XX.dat
+  &VELOCITY0        BOND
+    &ATOM
+      SYMBOL        O
+      &BOND_WITH
+	SYMBOL      H
+	NB_BOND     2
+	DMIN        0
+	DMAX        1.3
+      &END BOND_WITH
+    &END ATOM
+    V_BOND_REF
+
+    #POLARIZABILITY means that (d v / d r) is a tensor
+    #therefore it is dedicated to study the polarizability
+    #You need 2 indexes for the tensor
+    #If you do some SFG for the PQR polarization, it will corresponf
+    #to P and Q
+    &POLARIZABILITY X X
+      #The tensor is symmetric, therefore we just give the bottom triangle
+      #values (in the lab framework)
+      STRETCH_x +0.40            #xx
+      STRETCH_y +0.00 +0.53      #yx yy 
+      STRETCH_z +0.02 +0.00 +1.86#zx zy zz
+    &END POLARIZABILITY
+  &END VELOCITY0
+  &VELOCITYT        AUTO
+
+    #Again, you do whatever you want with (d v / d t)_T
+    V_BOND_REF
+    &POLARIZABILITY X X
+      STRETCH_x +0.40            #xx
+      STRETCH_y +0.00 +0.53      #yx yy 
+      STRETCH_z +0.02 +0.00 +1.86#zx zy zz
+    &END POLARIZABILITY
+  &END VELOCITYT
+&END VVAF

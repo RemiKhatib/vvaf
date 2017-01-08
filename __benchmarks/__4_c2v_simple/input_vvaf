@@ -1,0 +1,96 @@
+#We generalize the concept used in 3
+#d v / d t = (d v / d q) (d q / d t)
+#where q is associated with a collective motion (a normal mode)
+
+#I did the work only for a C2V symmetry (those of water)
+#Therefore you have only 3 normal modes (Bending,
+#Sym, Stretch, Antisym. Stretch)
+#I use the molecular framework (x, y, z) as it is
+#define usually for the C2V symmetry
+#z along the bisector
+#x in the molecular plane
+#y out of the molecular plane
+
+&MAIN
+  VEL_FILE          vel.xyz
+  CELL_PARAM	    20 20 50
+  NORMAL_AXIS	    Z
+  FIRST_STEP	    0
+  FINAL_STEP	    20000
+  SAMPLE_WINDOW	    1000
+  SAMPLE_SHIFT	    10
+  POS_FILE	    pos.xyz
+  SLAB_CENTER	    0
+&END MAIN
+
+&VVAF               vvaf_H2O_c2v_IR-X.dat
+  &VELOCITY0        BOND
+
+    #This keyword defines q
+    #For the bending, q is the angle (in radian) between H-O-H
+    #For the SS, q is the sum of the 2 bond velocities
+    #For the AS, q is the difference of the 2 bond velocities
+    SIMPLE_C2V
+
+    &ATOM
+      SYMBOL O
+      &BOND_WITH
+	SYMBOL      H
+	NB_BOND     2
+	DMIN        0
+	DMAX        1.3
+      &END BOND_WITH
+    &END ATOM
+
+    #Like in 3, you have to give the derivatives
+    #(d v / d q) when v is a vector
+    #For symmetry reasons, the bending and the SS are exclusively along z
+    # (molecular framework) while the AS is along x
+    &DIPOLE         X
+      BEND -0.97 #z
+      SS    1.16 #z
+      AS   -1.83 #x
+    &END DIPOLE
+  &END VELOCITY0
+  &VELOCITYT        AUTO
+    &DIPOLE         X
+      BEND -0.97 #z
+      SS    1.16 #z
+      AS   -1.83 #x
+    &END DIPOLE
+  &END VELOCITYT
+&END VVAF
+
+
+&VVAF               vvaf_H2O_c2v_Raman-XX.dat
+  &VELOCITY0        BOND
+    SIMPLE_C2V
+    &ATOM
+      SYMBOL O
+      &BOND_WITH
+	SYMBOL      H
+	NB_BOND     2
+	DMIN        0
+	DMAX        1.3
+      &END BOND_WITH
+    &END ATOM
+
+    #Like i 3, you have to give the derivatives
+    #(d v / d q) when v is a tensor
+    #For symmetry reasons, the bending and the SS matrix are diagonal
+    #while the AS has only xz = zx which is different from 0
+    &POLARIZABILITY X X
+      BEND +0.26 +0.06 -0.18 #xx yy zz
+      AS   -0.72             #xz
+      SS    1.34  0.54  0.98 #xx yy zz
+    &END POLARIZABILITY
+  &END VELOCITY0
+  &VELOCITYT        AUTO
+    &POLARIZABILITY X X
+      BEND +0.26 +0.06 -0.18 #xx yy zz
+      AS   -0.72             #xz
+      SS    1.34  0.54  0.98 #xx yy zz
+    &END POLARIZABILITY
+  &END VELOCITYT
+&END VVAF
+
