@@ -1,0 +1,2 @@
+It is not possible to have an empty directory with git
+https://git.wiki.kernel.org/index.php/GitFaq#Can_I_add_empty_directories.3F

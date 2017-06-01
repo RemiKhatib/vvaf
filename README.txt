@@ -3,7 +3,9 @@
 #velocity-velocity correlation functions.
 #The goal is to simulate vibrational spectra
 #(IR, Rman, SFG)
-
+#With this program, you will be able to reproduce
+#the results of:
+#http://pubs.acs.org/doi/abs/10.1021/acs.jpclett.7b00207?journalCode=jpclcd
 
 #========
 #Makefile
