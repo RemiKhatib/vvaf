@@ -20,7 +20,8 @@ FC=gfortran
 SRC_DIR=src
 OBJ_DIR=obj
 EXEC=vvaf
-SRC= $(wildcard $(addprefix $(SRC_DIR)/, module.f95 *.f95)) #List of the sources (module.f95 has to be first)
+SRC_DUP= $(wildcard $(addprefix $(SRC_DIR)/, module.f95 *.f95)) #List of the sources (module.f95 has to be first) but it will be in duplicate
+SRC=$(shell echo $(SRC_DUP) | tr ' ' '\n' | awk '!a[$$0]++' | tr '\n' ' ') #Deletion of the duplicate module.f95
 OBJ= $(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.f95=.o))) #List of the object files 
 
 #=================
