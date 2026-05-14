@@ -283,11 +283,12 @@ subroutine velq2dippol(opt_vel,vout,box_size,center,x,y,z,slab_orient,cosm)
   implicit none
 
   !From upper subroutines
-  type (velocity) :: opt_vel
-  double precision, dimension(3):: vout 
-  double precision, dimension(3,3) :: cosm 
-  double precision :: box_size,center,x,y,z
-  character :: slab_orient
+  type (velocity), intent(in) :: opt_vel
+  double precision, intent(in):: x,y,z
+  double precision, dimension(3), intent(inout)::vout 
+  double precision, dimension(3,3), intent(in) :: cosm 
+  double precision, intent(in) :: box_size,center
+  character, intent(in):: slab_orient
 
   !Local variables
   double precision:: ptr_z

@@ -112,8 +112,8 @@ subroutine weight_info(ptr_info,kindmax)
   use mymod, only : info_atoms !The defined type info_atoms is re-used
   implicit none
   !From the main
-  integer kindmax
-  type (info_atoms), dimension(:), pointer :: ptr_info 
+  integer, intent(inout) :: kindmax
+  type (info_atoms), dimension(:), pointer, intent(inout) :: ptr_info 
 
   kindmax=11
   allocate (ptr_info(kindmax))!The table is dynamic because some unknown elements can be added during the vvaf

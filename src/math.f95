@@ -144,9 +144,9 @@ double precision function f_dipole(c,center,at_center,ligand,third,opt_vel,z)
   implicit none  
 
   !From the main
-  integer at_center,ligand,third
-  double precision c,center,z
-  type (velocity):: opt_vel
+  integer, intent(in) :: at_center,ligand,third
+  double precision, intent(in) :: c,center,z
+  type (velocity), intent(in) :: opt_vel
   
   !Local
   double precision, dimension(3) :: cosx,cosy,cosz
@@ -199,8 +199,8 @@ double precision function f_polariz(at_center,ligand,third,opt_vel)
   implicit none  
   
   !From the main
-  integer at_center,ligand,third
-  type (velocity):: opt_vel
+  integer, intent(in) :: at_center,ligand,third
+  type (velocity), intent(in) :: opt_vel
 
   !Local
   integer i,j
@@ -251,9 +251,9 @@ subroutine bond_frame(cosx,cosy,cosz,opt_vel,at_center,ligand,third)
   implicit none
 
   !From upper subroutine
-  integer at_center,ligand,third
-  double precision, dimension(3) :: cosx,cosy,cosz
-  type (velocity):: opt_vel
+  integer, intent(in):: at_center,ligand,third
+  double precision, dimension(3), intent(inout) :: cosx,cosy,cosz
+  type (velocity), intent(in) :: opt_vel
 
   !====
   !cosz
@@ -486,10 +486,10 @@ subroutine third_at(natoms,opt_vel,i,j,x,y,z,a,b,c)
   implicit none
 
   !From the vvaf subroutine
-  integer :: natoms,i,j
-  double precision:: a,b,c
-  double precision, dimension(natoms) :: x,y,z
-  type (velocity) :: opt_vel
+  integer, intent(in) :: natoms,i,j
+  double precision, intent(in):: a,b,c
+  double precision, dimension(natoms), intent(in) :: x,y,z
+  type (velocity), intent(inout) :: opt_vel
 
   !Local
   integer k
@@ -534,8 +534,8 @@ subroutine stretch(vout,bond)
   implicit none
 
   !From the vvaf subroutine
-  double precision, dimension(3) :: vout
-  type (info_bond) :: bond
+  double precision, dimension(3),intent(inout) :: vout
+  type (info_bond), intent(in) :: bond
 
   !Local
   double precision dotp
@@ -571,8 +571,8 @@ subroutine bond_update(dx,dy,dz,bond,a,b,c)
   implicit none
 
   !From vvaf subroutine
-  double precision a,b,c,dx,dy,dz
-  type (info_bond) :: bond
+  double precision, intent(in) ::  a,b,c,dx,dy,dz
+  type (info_bond), intent(inout)  :: bond
 
   !Projection of the bond on the normal axis
   bond%cos(1)=dx-anint(dx/a)*a
@@ -600,9 +600,9 @@ subroutine vel_diff(opt_vel,vatx,vaty,vatz,vrefx,vrefy,vrefz,vout)
   implicit none
 
   !From vvaf suboutine
-  double precision vatx,vaty,vatz,vrefx,vrefy,vrefz
-  double precision,dimension(3):: vout
-  type (velocity) :: opt_vel
+  double precision, intent(in) :: vatx,vaty,vatz,vrefx,vrefy,vrefz
+  double precision, dimension(3), intent(inout) :: vout
+  type (velocity), intent(in) :: opt_vel
 
   if(opt_vel%bond_diff)then
      vout(1)=vatx-vrefx
@@ -700,7 +700,8 @@ subroutine cross_prod(v1,v2,v3)
   implicit none
 
   !From upper subroutine
-  double precision, dimension(3)::v1,v2,v3
+  double precision, dimension(3), intent(in)::v1,v2
+  double precision, dimension(3), intent(inout)::v3
 
   !local
   double precision norm

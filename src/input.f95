@@ -176,19 +176,20 @@ subroutine input_main(nb_read,nmovie,natoms,istep,kindmax,Di,shift,step_min,step
   implicit none
 
   !From the upper subroutine
-  integer nb_read,nmovie,natoms,istep,kindmax,Di,shift,step_min,step_max
-  double precision a,b,c,box_size,center,surface
-  double precision, dimension(:), allocatable :: fmass
-  character slab_orient
-  character(len=100) filetr,filepos
-  character(len=3), dimension(:), allocatable :: atom_type
-  logical:: file_exist=.false.
-  type (info_atoms), dimension(:), pointer :: ptr_info 
+  integer, intent(in):: nb_read
+  integer, intent(inout) :: nmovie,natoms,istep,kindmax,Di,shift,step_min,step_max
+  double precision, intent(inout) :: a,b,c,box_size,center,surface
+  double precision, dimension(:), allocatable, intent(inout) :: fmass
+  character, intent(inout) ::  slab_orient
+  character(len=100), intent(inout):: filetr,filepos
+  character(len=3), dimension(:), allocatable, intent(inout) :: atom_type
+  type (info_atoms), dimension(:), pointer, intent(inout) :: ptr_info 
 
   !Local
   integer :: i,end_file
   character(len=100) :: chain,block_name
   logical next_new
+  logical:: file_exist=.false.
 
   !Initialization
   i=0
@@ -390,8 +391,8 @@ subroutine input_main_atweight(kindmax,ptr_info)
   implicit none
 
   !From upper subroutine
-  integer::kindmax
-  type (info_atoms),dimension(:), pointer :: ptr_info
+  integer, intent(inout)::kindmax
+  type (info_atoms),dimension(:), pointer,intent(inout) :: ptr_info
 
   !Local variables
   integer i,j,end_file
@@ -470,14 +471,14 @@ subroutine input_vvaf(nb_read,filepos,nmovie,natoms,options,atom_type,fmass,a,b,
   implicit none
 
   !From upper subroutine
-  integer :: nb_read,nmovie,natoms,Di,shift
-  double precision a,b,c,box_size,center,surface
-  double precision,dimension(:,:):: vx,vy,vz,x,y,z
-  double precision, dimension(natoms) :: fmass
-  character:: slab_orient
-  character(len=3), dimension(natoms):: atom_type
-  character(len=100) :: filepos
-  type (vvaf_options) :: options  
+  integer, intent(in) :: nb_read,nmovie,natoms,Di,shift
+  double precision,intent(in) :: a,b,c,box_size,center,surface
+  double precision,dimension(:,:),intent(in):: vx,vy,vz,x,y,z
+  double precision, dimension(natoms), intent(in) :: fmass
+  character, intent(in) :: slab_orient
+  character(len=3), dimension(natoms), intent(in) :: atom_type
+  character(len=100), intent(in) :: filepos
+  type (vvaf_options), intent(inout) :: options
 
   !Local
   integer:: i,end_file
@@ -1022,13 +1023,13 @@ subroutine input_vvaf_velocity(nb_vel,filepos,natoms,vel,inc,cross,atom_type,fma
   implicit none
 
   !From upper subroutine
-  integer natoms,nb_vel
-  double precision a,b,c
-  double precision, dimension(natoms) :: fmass
-  character(len=3), dimension(natoms) :: atom_type
-  character(len=100) filepos
-  logical :: inc,cross
-  type (velocity) :: vel
+  integer, intent(in) :: natoms,nb_vel
+  double precision, intent(in) :: a,b,c
+  double precision, dimension(natoms), intent(in) :: fmass
+  character(len=3), dimension(natoms), intent(in) :: atom_type
+  character(len=100), intent(in) :: filepos
+  logical, intent(inout) :: inc,cross
+  type (velocity), intent(inout) :: vel
 
   !Local
   integer:: i,j,end_file
@@ -1375,8 +1376,8 @@ subroutine read_tab_dipol(vel,next_new)
   implicit none
 
   !From upper subroutine
-  logical next_new
-  type (velocity) :: vel
+  logical, intent(inout) :: next_new
+  type (velocity), intent(inout) :: vel
 
   !Local variables
   integer:: i,end_file,mode
@@ -1453,7 +1454,7 @@ subroutine skip_line_tab_dipol(next_new)
   implicit none
 
   !From upper subroutine
-  logical next_new
+  logical, intent(inout) :: next_new
 
   !Local variables
   integer:: end_file
@@ -1505,8 +1506,8 @@ subroutine read_tab_pol(vel,next_new)
   implicit none
 
   !From upper subroutine
-  type (velocity) :: vel
-  logical next_new
+  logical, intent(inout) :: next_new
+  type (velocity), intent(inout) :: vel
 
   !Local variables
   integer:: i,j,end_file,mode
@@ -1597,7 +1598,7 @@ subroutine skip_line_tab_pol(next_new)
   implicit none
 
   !From upper subroutine
-  logical next_new
+  logical, intent(inout) :: next_new
 
   !Local variables
   integer:: end_file
@@ -1671,11 +1672,11 @@ subroutine input_vvaf_velocity_atom(natoms,vel,atom_type,a,b,c,inc)
   implicit none
 
   !From upper subroutine
-  integer natoms
-  double precision a,b,c
-  character(len=3), dimension(natoms) :: atom_type
-  logical inc
-  type (velocity) :: vel
+  integer, intent(in):: natoms
+  double precision, intent(in) :: a,b,c
+  character(len=3), dimension(natoms), intent(in) :: atom_type
+  logical, intent(inout) :: inc
+  type (velocity), intent(inout) :: vel
 
   !Local
   integer:: i,end_file
@@ -1765,9 +1766,9 @@ subroutine input_vvaf_velocity_atom_bondw(natoms,vel,atom_type)
   implicit none
 
   !From upper subroutine
-  integer natoms
-  character(len=3), dimension(natoms) :: atom_type
-  type (velocity) :: vel
+  integer, intent(in):: natoms
+  character(len=3), dimension(natoms), intent(in) :: atom_type
+  type (velocity), intent(inout) :: vel
 
   !Local
   integer:: i,end_file
@@ -1897,9 +1898,9 @@ subroutine input_vvaf_velocity_atom_layer(vel,a,b,c,inc)
   implicit none
 
   !From upper subroutine
-  double precision a,b,c
-  logical inc
-  type (velocity) :: vel
+  double precision, intent(in) :: a,b,c
+  logical, intent(inout) :: inc
+  type (velocity), intent(inout) :: vel
 
   !Local
   integer:: end_file
@@ -2007,9 +2008,9 @@ subroutine input_vvaf_velocity_atom_annulus(natoms,vel,atom_type)
   implicit none
 
   !From upper subroutine
-  integer natoms
-  character(len=3), dimension(natoms) :: atom_type
-  type (velocity) :: vel
+  integer, intent(in) :: natoms
+  character(len=3), dimension(natoms), intent(in) :: atom_type
+  type (velocity), intent(inout) :: vel
 
   !Local
   integer:: i=0,end_file=0
@@ -2130,7 +2131,7 @@ subroutine input_vvaf_velocity_hessian(vel)
   implicit none
 
   !From upper subroutine
-  type (velocity) :: vel
+  type (velocity), intent(inout) :: vel
 
   !Local
   integer:: end_file, i, j
@@ -2296,9 +2297,9 @@ end subroutine wrong_keyword
 subroutine read_word(word,err,next_new)
   implicit none
   !From call subroutine
-  character(len=100) word
-  integer err
-  logical next_new
+  character(len=100), intent(inout) :: word
+  integer, intent(inout) :: err
+  logical, intent(inout) :: next_new
 
   !Local
   integer:: i
@@ -2414,8 +2415,8 @@ subroutine recenter(vel,c)
   implicit none
 
   !From upper subroutine
-  double precision c
-  type (velocity) :: vel
+  double precision, intent(in) :: c
+  type (velocity), intent(inout) :: vel
 
   !All the boundaries are recenter
   !This operation is not done so often (max twice per vvaf)
@@ -2449,9 +2450,9 @@ subroutine update_layer(opt_vel,end_vvaf_block,inc_val,a,b,c)
   implicit none
 
   !From upper subroutine
-  double precision inc_val,a,b,c
-  logical end_vvaf_block
-  type (velocity) :: opt_vel
+  double precision, intent(in):: inc_val,a,b,c
+  logical,intent(inout) :: end_vvaf_block
+  type (velocity),intent(inout) :: opt_vel
 
   !===========================
   !M1-m2 increment will change
@@ -2592,8 +2593,8 @@ subroutine update_filename(name,name_tmp,v0,vt)
   implicit none
 
   !From upper subroutine
-  character(len=100) name,name_tmp
-  type (velocity) :: v0,vt
+  character(len=100),intent(inout):: name,name_tmp
+  type (velocity),intent(in) :: v0,vt
 
   !Local
   integer i,j,vel
